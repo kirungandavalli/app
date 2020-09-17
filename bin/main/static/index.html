@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/common.css" rel="stylesheet">
+<link href="css/jquery-ui.css" rel="stylesheet">
+
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+
+<script src="js/bootstrap.js"></script>
+
+<script src="js/components/init.js"></script>
+
+<script src="js/moment.js"></script>
+
+<script src="js/vue.js"></script>
+<script src="js/components/components.js"></script>
+<script src="js/components/admin.js"></script>
+
+<meta charset="ISO-8859-1">
+<title>Booking System</title>
+</head>
+<body>
+	<div id="app">
+		<login v-if="!loggedIn"></login>
+		<div v-if="loggedIn ">
+			<banner v-bind:employee="employee" :bannertitle="header"></banner>
+
+
+			<div class="d-md-flex h-md-100" v-if="!administration">
+				<div class="col-md-3 p-0 h-md-100 BookingCard">
+					<employee-dashboard :emp="employee"></employee-dashboard>
+				</div>
+				<div class="col-md-7 p-0  h-md-100 BookingCard">
+					<desk-container :key="administration" :desks="desks"></desk-container>
+				</div>
+				<div class="col-md-2 p-0  h-md-100 BookingCard"
+					style="padding-right: 30px !important">
+					<div class="card">
+						<div class="card-header">Selected Desk</div>
+						<div class="card-body">
+							<div>
+								<form @submit.prevent="book" v-if="!employee.desk && isAfter()">
+									<div class="form-group">
+										<input type="text" class="form-control" placeholder="desk"
+											required="required" v-model="selectedDesk">
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn btn-success btn-block">Book</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Administration -->
+			<div class="d-md-flex h-md-100" v-if="administration">
+				<div class="col-md-3 p-0 h-md-100 BookingCard">
+					<deskupload></deskupload>
+					<div style="padding-top: 5px;">
+						<config></config>
+					</div>
+				</div>
+				<div class="col-md-9 p-0  h-md-100 BookingCard">
+					<reports></reports>
+				</div>
+
+			</div>
+
+
+		</div>
+
+		
+
+		<div id="ConfirmAlert" class="modal fade">
+			<div class="modal-dialog modal-confirm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div class="icon-box">
+							<!-- <i class="material-icons">&#xE876;</i>  -->
+						</div>
+						<h4 class="modal-title w-100">Congrats!</h4>
+					</div>
+					<div class="modal-body">
+						<p class="text-center">{{confirmMsg}}. Check your email for
+							details.</p>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
